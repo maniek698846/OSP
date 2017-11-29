@@ -1,12 +1,13 @@
 package ospmarian;
 
-import java.awt.BorderLayout;
-import java.sql.*;
 import javax.swing.*;
 import java.awt.EventQueue;
-import java.awt.Frame;
-
 import javax.swing.border.EmptyBorder;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 import net.proteanit.sql.DbUtils;
 
@@ -21,9 +22,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Toolkit;
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.BorderLayout;
 
 public class wyjazdy extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3L;
 	private JPanel contentPane;
 	private JTable tabela;
 
@@ -74,9 +82,9 @@ public class wyjazdy extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(1, 1, 1, 1));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
 		JButton btnNewButton = new JButton("Zobacz wszystkie akcje");
+		btnNewButton.setBounds(9, 7, 172, 70);
 		btnNewButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
@@ -85,6 +93,8 @@ public class wyjazdy extends JFrame {
 					PreparedStatement pst=connection.prepareStatement(query);	
 					ResultSet rs = pst.executeQuery();
 					tabela.setModel(DbUtils.resultSetToTableModel(rs));
+					tabela.getColumnModel().getColumn(0).setMaxWidth(40);
+					
 					pst.close();
 				}catch(Exception exc)
 				{
@@ -93,21 +103,22 @@ public class wyjazdy extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setBounds(9, 7, 172, 70);
+		contentPane.setLayout(null);
 		contentPane.add(btnNewButton);
 		
 		JLabel lblImie = new JLabel("Imi\u0119 \r\ni \r\nnazwisko");
+		lblImie.setBounds(217, 47, 123, 30);
 		lblImie.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblImie.setForeground(Color.WHITE);
-		lblImie.setBounds(217, 47, 123, 30);
 		contentPane.add(lblImie);
 		
 		JLabel lblZobaczSwojeAkcje = new JLabel("Zobacz swoje akcje");
-		lblZobaczSwojeAkcje.setForeground(Color.WHITE);
 		lblZobaczSwojeAkcje.setBounds(217, 7, 136, 22);
+		lblZobaczSwojeAkcje.setForeground(Color.WHITE);
 		contentPane.add(lblZobaczSwojeAkcje);
 		
 		textFieldImie = new JTextField();
+		textFieldImie.setBounds(206, 32, 123, 20);
 		textFieldImie.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
@@ -132,11 +143,11 @@ public class wyjazdy extends JFrame {
 			
 			}
 		});
-		textFieldImie.setBounds(206, 32, 123, 20);
 		contentPane.add(textFieldImie);
 		textFieldImie.setColumns(10);
 		
 		JButton bWrc = new JButton("Wr\u00F3\u0107");
+		bWrc.setBounds(10, 380, 264, 30);
 		bWrc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OSP OSP1 = new OSP();
@@ -144,33 +155,68 @@ public class wyjazdy extends JFrame {
 				setVisible(false);
 			}
 		});
-		bWrc.setBounds(10, 380, 536, 30);
 		contentPane.add(bWrc);
 		
 		JDateChooser dateChooser = new JDateChooser();
 		dateChooser.setBounds(445, 32, 87, 20);
 		contentPane.add(dateChooser);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(9, 84, 537, 292);
+		contentPane.add(scrollPane_1);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(9, 84, 537, 292);
-		contentPane.add(scrollPane);
+		scrollPane_1.setViewportView(scrollPane);
 		
 		tabela = new JTable();
+		tabela.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int nrWierszu = tabela.getSelectedRow();
+				int YesOrNo = JOptionPane.showConfirmDialog(null, "Czy chcesz zobaczyc ca³y raport z wyjazdu");
+				if (YesOrNo == 0)
+				{
+					wyjazdCal wyjKon = new wyjazdCal();
+					wyjKon.setVisible(true);
+					setVisible(false);
+				}
+			}
+		});
 		scrollPane.setViewportView(tabela);
+		
+		JButton btnWykres = new JButton("Wykres");
+		btnWykres.setBounds(282, 380, 264, 30);
+		btnWykres.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultPieDataset wykresWyjazd = new DefaultPieDataset();
+				wykresWyjazd.setValue("One", new Integer(10));
+				wykresWyjazd.setValue("Two", new Integer(20));
+				wykresWyjazd.setValue("Three", new Integer(30));
+				wykresWyjazd.setValue("Four", new Integer(40));
+				JFreeChart wykres = ChartFactory.createPieChart("Wyjazdy", wykresWyjazd, true, true, true);
+				wykres.getPlot();
+				ChartFrame frame = new ChartFrame("Pie Chart", wykres);
+				frame.setVisible(true);
+				frame.setSize(450,500);
+				
+			}
+		});
+		contentPane.add(btnWykres);
 		
 		JDateChooser dateChooser_1 = new JDateChooser();
 		dateChooser_1.setBounds(349, 32, 87, 20);
 		contentPane.add(dateChooser_1);
 		
 		JLabel lblZakresCzasowyAkcji = new JLabel("Zakres czasowy akcji");
+		lblZakresCzasowyAkcji.setBounds(371, 50, 145, 24);
 		lblZakresCzasowyAkcji.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblZakresCzasowyAkcji.setForeground(Color.WHITE);
-		lblZakresCzasowyAkcji.setBounds(371, 50, 145, 24);
 		contentPane.add(lblZakresCzasowyAkcji);
 		
 		JLabel lblTlo = new JLabel("");
-		lblTlo.setIcon(new ImageIcon(wyjazdy.class.getResource("/zdjecia/Bez nazwy-1.png")));
 		lblTlo.setBounds(-14, -13, 581, 459);
+		lblTlo.setIcon(new ImageIcon(wyjazdy.class.getResource("/zdjecia/Bez nazwy-1.png")));
 		contentPane.add(lblTlo);
 	}
 

@@ -27,6 +27,10 @@ import javax.swing.JRadioButton;
 
 public class czlonkowie extends JFrame  {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2L;
 	private JPanel contentPane;
 	private JTextField tFimie;
 	private JTextField tFNazwisko;
@@ -48,7 +52,6 @@ public class czlonkowie extends JFrame  {
 	}
 	
 	Connection connection = null;
-	private JTable table;
 	private JTable tabela1;
 
 	public czlonkowie() {
@@ -76,8 +79,7 @@ public class czlonkowie extends JFrame  {
 		tabbedPane.setBounds(24, 10, 511, 360);
 		contentPane.add(tabbedPane);
 		
-		JTable tabela = new JTable();
-//		scrollPane.setViewportView(tabela);
+		new JTable();
 		
 		JPanel tabAct = new JPanel();
 		tabAct.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));

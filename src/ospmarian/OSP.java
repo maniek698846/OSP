@@ -249,7 +249,7 @@ public class OSP {
 					pst.setString(1, auto);	//Samochód
 					pst.setString(2, comboBox_7.getSelectedItem().toString());  //Zdarzenie
 					pst.setString(3, comboBox_6.getSelectedItem().toString());  //Miejscowosc
-					pst.setString(4, dateChooser.getDateFormatString());
+					pst.setString(4, dateChooser.getDate().toString());
 //					pst.setString(4, auto);//Data  
 					pst.setString(5, comboBox_8.getSelectedItem().toString()+":"+comboBox_9.getSelectedItem().toString());		//Data
 					pst.setString(6, tfIleKm.getText().toString());					//Ile KM
@@ -342,7 +342,7 @@ public class OSP {
 		
 
 		
-		btnNewButton_1.setBounds(9, 387, 124, 23);
+		btnNewButton_1.setBounds(10, 387, 124, 23);
 		frame.getContentPane().add(btnNewButton_1);
 		
 		JButton btnCzonkowie = new JButton("Cz\u0142onkowie");
