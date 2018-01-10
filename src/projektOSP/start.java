@@ -1,4 +1,4 @@
-package ospmarian;
+package projektOSP;
 
 import java.awt.EventQueue;
 
@@ -50,7 +50,7 @@ public class start extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		setLocationRelativeTo(null);
 		JButton btnRaportZWyjazdu = new JButton("");
 		btnRaportZWyjazdu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

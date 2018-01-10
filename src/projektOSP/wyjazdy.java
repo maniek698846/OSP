@@ -1,13 +1,17 @@
-package ospmarian;
+package projektOSP;
 
 import javax.swing.*;
-import java.awt.EventQueue;
 import javax.swing.border.EmptyBorder;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
+
+//import org.jfree.chart.ChartFactory;
+//import org.jfree.chart.ChartFrame;
+//import org.jfree.chart.JFreeChart;
+//import org.jfree.data.general.DefaultPieDataset;
 
 import net.proteanit.sql.DbUtils;
 
@@ -24,8 +28,6 @@ import java.awt.Toolkit;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.BorderLayout;
-
 public class wyjazdy extends JFrame {
 
 	/**
@@ -34,22 +36,12 @@ public class wyjazdy extends JFrame {
 	private static final long serialVersionUID = 3L;
 	private JPanel contentPane;
 	private JTable tabela;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					wyjazdy frame = new wyjazdy();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    private static String a_number;
+    
+    public static String getNumber() { 
+    	JOptionPane.showMessageDialog(null, a_number);
+    	return a_number; 
+    	}
 	
 	Connection connection = null;
 	private JTextField textFieldImie;
@@ -75,14 +67,17 @@ public class wyjazdy extends JFrame {
 	}
 	
 	public wyjazdy() {
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(wyjazdy.class.getResource("/zdjecia/Bez nazwy-2.gif")));
 		connection=sqliteConnection.dbConnector();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 572, 460);
 		contentPane = new JPanel();
+		setLocationRelativeTo(null);
+
+		
 		contentPane.setBorder(new EmptyBorder(1, 1, 1, 1));
 		setContentPane(contentPane);
-		
 		JButton btnNewButton = new JButton("Zobacz wszystkie akcje");
 		btnNewButton.setBounds(9, 7, 172, 70);
 		btnNewButton.addActionListener(new ActionListener() {
@@ -168,35 +163,72 @@ public class wyjazdy extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane_1.setViewportView(scrollPane);
 		
+
+
+		
 		tabela = new JTable();
-		tabela.addMouseListener(new MouseAdapter() {
+		tabela.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+					
 				int nrWierszu = tabela.getSelectedRow();
+				
+				
+				a_number = tabela.getValueAt(nrWierszu, 0).toString();
+				getNumber();
 				int YesOrNo = JOptionPane.showConfirmDialog(null, "Czy chcesz zobaczyc ca³y raport z wyjazdu");
 				if (YesOrNo == 0)
 				{
+					
 					wyjazdCal wyjKon = new wyjazdCal();
 					wyjKon.setVisible(true);
 					setVisible(false);
+
 				}
 			}
 		});
+		
+
+		
 		scrollPane.setViewportView(tabela);
 		
 		JButton btnWykres = new JButton("Wykres");
 		btnWykres.setBounds(282, 380, 264, 30);
 		btnWykres.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				String zdarzenie = "Po¿ar";
+				ResultSet zdarzenieL = null;
+				String zdarzenie2;
+				String zdarzenie3;
+				String zdarzenie4;
+				String zdarzenie5;
+				try {
+					String query="Select Count zdarzenie from wyjazdy where zdarzenie=?";
+					PreparedStatement pst=connection.prepareStatement(query);
+					pst.setString(1,  zdarzenie);
+						
+					ResultSet rs = pst.executeQuery();
+					zdarzenieL=rs;
+					
+					pst.close();
+				}catch(Exception exc)
+				{
+					JOptionPane.showMessageDialog(null, exc);
+					exc.printStackTrace();						 
+				}
+			
 				DefaultPieDataset wykresWyjazd = new DefaultPieDataset();
-				wykresWyjazd.setValue("One", new Integer(10));
-				wykresWyjazd.setValue("Two", new Integer(20));
-				wykresWyjazd.setValue("Three", new Integer(30));
-				wykresWyjazd.setValue("Four", new Integer(40));
+				setLocationRelativeTo(null);
+
+				wykresWyjazd.setValue("Po¿ar", (Number) zdarzenieL);
+				wykresWyjazd.setValue("Miejscowe zagrozenie", new Integer(20));
+				wykresWyjazd.setValue("Wyjazd gospodarczy", new Integer(30));
+				wykresWyjazd.setValue("Podtopienie", new Integer(40));
+				wykresWyjazd.setValue("Szerszenie", new Integer(40));
+				wykresWyjazd.setValue("Wypadek", new Integer(40));
 				JFreeChart wykres = ChartFactory.createPieChart("Wyjazdy", wykresWyjazd, true, true, true);
 				wykres.getPlot();
-				ChartFrame frame = new ChartFrame("Pie Chart", wykres);
+				ChartFrame frame = new ChartFrame("Wyjazdy", wykres);
 				frame.setVisible(true);
 				frame.setSize(450,500);
 				
@@ -218,8 +250,12 @@ public class wyjazdy extends JFrame {
 		lblTlo.setBounds(-14, -13, 581, 459);
 		lblTlo.setIcon(new ImageIcon(wyjazdy.class.getResource("/zdjecia/Bez nazwy-1.png")));
 		contentPane.add(lblTlo);
+		
+		
+	
+	
 	}
-
+	
 	protected static void DISPOSE_ON_CLOSE() {
 		// TODO Auto-generated method stub
 		

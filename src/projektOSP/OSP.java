@@ -1,44 +1,28 @@
-package ospmarian;
+package projektOSP;
 
 import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import java.awt.BorderLayout;
-import javax.swing.SwingConstants;
-import javax.swing.JCheckBox;
 import javax.swing.JSeparator;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import java.awt.Color;
-import java.awt.SystemColor;
 import javax.swing.UIManager;
 
 
 import java.awt.Toolkit;
-import java.awt.Window.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.TextArea;
-import java.awt.Choice;
-import java.awt.Scrollbar;
-import java.awt.Canvas;
 import java.awt.Font;
 import java.sql.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JToggleButton;
-import javax.swing.JMenuBar;
 import javax.swing.JRadioButton;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
-import com.toedter.calendar.IDateEditor;
 import com.toedter.calendar.JDateChooser;
 public class OSP {
 	
@@ -80,6 +64,7 @@ public class OSP {
 	private void initialize() {
 		
 		frame = new JFrame();
+		frame.setResizable(false);
 		connection=sqliteConnection.dbConnector();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(OSP.class.getResource("/zdjecia/Bez nazwy-2.gif")));
 		frame.getContentPane().setBackground(Color.ORANGE);
@@ -87,13 +72,11 @@ public class OSP {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle("Wyjazdy OSP Lekowo");
+		frame.setLocationRelativeTo(null);
 		
-		JComboBox<String> comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.addItem("Kierowca");
-		comboBox.addItem("Marek Chodkowski");
-		comboBox.addItem("Maciej Morawski");
-		comboBox.addItem("Adam Gralewski");
-		comboBox.addItem("Jakub Dobrzeniecki");
+		wypelnijcb.wypComboBoxKier(comboBox);
 		comboBox.setBounds(36, 107, 200, 23);
 		frame.getContentPane().add(comboBox);
 		
@@ -101,12 +84,6 @@ public class OSP {
 		
 		JComboBox<String> comboBox_1 = new JComboBox<String>();
 		comboBox_1.addItem("Dowódca");
-//		comboBox_1.addItem("Marek D¹browski");
-//		comboBox_1.addItem("Jakub Dobrzeniecki");
-//		comboBox_1.addItem("Krzysztof Kêdzierski");
-//		comboBox_1.addItem("Kamil Kêdzierski");
-//		comboBox_1.addItem("Grzegorz Lipka");
-//		comboBox_1.addItem("Mariusz Siennicki");
 		comboBox_1.setBounds(294, 107, 198, 23);
 		frame.getContentPane().add(comboBox_1);
 		wypelnijcb.wypComboBox(comboBox_1);
@@ -141,12 +118,12 @@ public class OSP {
 		lblMiejsceZdarzenia.setBounds(10, 311, 123, 23);
 		frame.getContentPane().add(lblMiejsceZdarzenia);
 		
-		JComboBox<String> comboBox_6 = new JComboBox();
+		JComboBox<String> comboBox_6 = new JComboBox<String>();
 		comboBox_6.addItem("Lekowo");
 		comboBox_6.setBounds(139, 312, 105, 23);
 		frame.getContentPane().add(comboBox_6);
 		
-		JComboBox<String> comboBox_7 = new JComboBox();
+		JComboBox<String> comboBox_7 = new JComboBox<String>();
 		comboBox_7.addItem("Po¿ar");
 		comboBox_7.addItem("Wypadek");
 		comboBox_7.addItem("Szerszenie, osy");
@@ -171,7 +148,6 @@ public class OSP {
 		Date currentDate = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		String dataString = dateFormat.format(currentDate);
-		System.out.println(dataString);
 		JLabel lblData = new JLabel("Data:");
 		lblData.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblData.setForeground(Color.ORANGE);
@@ -216,7 +192,7 @@ public class OSP {
 		frame.getContentPane().add(rbPeugeot);
 		
 		JRadioButton rbMercedes = new JRadioButton("Mercedes");
-		rbMercedes.addActionListener(new ActionListener() {
+			rbMercedes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
@@ -224,17 +200,19 @@ public class OSP {
 		rbMercedes.setBackground(Color.DARK_GRAY);
 		rbMercedes.setBounds(363, 0, 129, 23);
 		frame.getContentPane().add(rbMercedes);
-		
+//		final String var1 = String.valueOf(comboBox_4);
+//		System.out.println(var1);	
 
 //		
 		JButton btnNewButton = new JButton("Raport");
 		btnNewButton.setBackground(Color.GREEN);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final String var1 = String.valueOf(comboBox_4);
-				System.out.println(var1);
+
 				try {
-					String query="insert into wyjazdy (samochod,zdarzenie, miejscowosc, data, godzina, ilosc_km, kierowca, dowodca, ratownik1, ratownik2, ratownik3, ratownik4, opis) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13);";
+					String query="insert into wyjazdy (samochod,zdarzenie, miejscowosc, data, godzina, ilosc_km, "
+							+ "kierowca, dowodca, ratownik1, ratownik2, ratownik3, ratownik4, opis) "
+							+ "values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13);";
 					
 					PreparedStatement pst=connection.prepareStatement(query);
 					String auto ="";
@@ -250,7 +228,6 @@ public class OSP {
 					pst.setString(2, comboBox_7.getSelectedItem().toString());  //Zdarzenie
 					pst.setString(3, comboBox_6.getSelectedItem().toString());  //Miejscowosc
 					pst.setString(4, dateChooser.getDate().toString());
-//					pst.setString(4, auto);//Data  
 					pst.setString(5, comboBox_8.getSelectedItem().toString()+":"+comboBox_9.getSelectedItem().toString());		//Data
 					pst.setString(6, tfIleKm.getText().toString());					//Ile KM
 					pst.setString(7, comboBox.getSelectedItem().toString());	//kierowca
@@ -385,7 +362,7 @@ public class OSP {
 		lblNewLabel_3.setBounds(186, 0, 163, 104);
 		frame.getContentPane().add(lblNewLabel_3);
 		lblNewLabel_5.setIcon(new ImageIcon(OSP.class.getResource("/zdjecia/Bez nazwy-12.png")));
-		lblNewLabel_5.setBounds(0, -11, 556, 432);
+		lblNewLabel_5.setBounds(0, -11, 576, 452);
 		frame.getContentPane().add(lblNewLabel_5);
 		
 		

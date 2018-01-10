@@ -1,4 +1,4 @@
-package ospmarian;
+package projektOSP;
 
 import java.sql.*;
 import javax.swing.*;
