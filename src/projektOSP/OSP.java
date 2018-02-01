@@ -129,6 +129,7 @@ public class OSP {
 		comboBox_7.addItem("Szerszenie, osy");
 		comboBox_7.addItem("Podtopienie");
 		comboBox_7.addItem("Wyjazd gospodarczy");
+		comboBox_7.addItem("Miejscowe zagro¿enie");
 		comboBox_7.addItem("Inny");
 		comboBox_7.setBounds(139, 284, 105, 20);
 		frame.getContentPane().add(comboBox_7);
@@ -245,7 +246,7 @@ public class OSP {
 					pst.close();
 				}catch(Exception exc)
 				{
-					JOptionPane.showMessageDialog(null, exc);
+					JOptionPane.showMessageDialog(null, "Wype³nij wszystkie pola");
 					exc.printStackTrace();
 		
 					 

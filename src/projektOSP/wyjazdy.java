@@ -39,7 +39,6 @@ public class wyjazdy extends JFrame {
     private static String a_number;
     
     public static String getNumber() { 
-    	JOptionPane.showMessageDialog(null, a_number);
     	return a_number; 
     	}
 	
@@ -58,12 +57,10 @@ public class wyjazdy extends JFrame {
 			{
 				comboBoxName2.addItem(rs.getString("Imie")+" "+rs.getString("Nazwisko"));		
 			}
-			
 		}catch(Exception exc)
 		{
 			exc.printStackTrace();		 
-		}
-		
+		}	
 	}
 	
 	public wyjazdy() {
@@ -74,7 +71,6 @@ public class wyjazdy extends JFrame {
 		setBounds(100, 100, 572, 460);
 		contentPane = new JPanel();
 		setLocationRelativeTo(null);
-
 		
 		contentPane.setBorder(new EmptyBorder(1, 1, 1, 1));
 		setContentPane(contentPane);
@@ -102,24 +98,34 @@ public class wyjazdy extends JFrame {
 		contentPane.add(btnNewButton);
 		
 		JLabel lblImie = new JLabel("Imi\u0119 \r\ni \r\nnazwisko");
-		lblImie.setBounds(217, 47, 123, 30);
+		lblImie.setBounds(191, 47, 123, 30);
 		lblImie.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblImie.setForeground(Color.WHITE);
 		contentPane.add(lblImie);
 		
 		JLabel lblZobaczSwojeAkcje = new JLabel("Zobacz swoje akcje");
-		lblZobaczSwojeAkcje.setBounds(217, 7, 136, 22);
+		lblZobaczSwojeAkcje.setBounds(191, 7, 136, 22);
 		lblZobaczSwojeAkcje.setForeground(Color.WHITE);
 		contentPane.add(lblZobaczSwojeAkcje);
 		
+		JLabel labelCount = new JLabel("");
+		labelCount.setForeground(Color.WHITE);
+		labelCount.setBounds(322, 35, 46, 14);
+		
 		textFieldImie = new JTextField();
-		textFieldImie.setBounds(206, 32, 123, 20);
+		textFieldImie.setBounds(191, 32, 123, 20);
 		textFieldImie.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				try {
-					String query="Select  data, miejscowosc, zdarzenie from wyjazdy where dowodca=? OR ratownik1=? OR ratownik2=? OR ratownik3=? OR ratownik4=? OR kierowca=?";
+					String query="Select  data, miejscowosc, zdarzenie from wyjazdy where dowodca=?"
+							+ " OR ratownik1=? OR ratownik2=? OR ratownik3=? OR ratownik4=? OR kierowca=?";
+					
+					String query1="Select  Count(ID) from wyjazdy where dowodca=?"
+							+ " OR ratownik1=? OR ratownik2=? OR ratownik3=? OR ratownik4=? OR kierowca=?";
+					
 					PreparedStatement pst=connection.prepareStatement(query);
+					PreparedStatement pst1=connection.prepareStatement(query1);
 					pst.setString(1,  textFieldImie.getText());
 					pst.setString(2,  textFieldImie.getText());
 					pst.setString(3,  textFieldImie.getText());
@@ -127,17 +133,30 @@ public class wyjazdy extends JFrame {
 					pst.setString(5,  textFieldImie.getText());
 					pst.setString(6,  textFieldImie.getText());
 					
+					pst1.setString(1,  textFieldImie.getText());
+					pst1.setString(2,  textFieldImie.getText());
+					pst1.setString(3,  textFieldImie.getText());
+					pst1.setString(4,  textFieldImie.getText());
+					pst1.setString(5,  textFieldImie.getText());
+					pst1.setString(6,  textFieldImie.getText());
+
 					ResultSet rs = pst.executeQuery();
+					ResultSet rs1 = pst1.executeQuery();
 					tabela.setModel(DbUtils.resultSetToTableModel(rs));
+					
+					labelCount.setText(rs1.getString(1));
 					pst.close();
+					pst1.close();
 				}catch(Exception exc)
 				{
 					JOptionPane.showMessageDialog(null, exc);
 					exc.printStackTrace();						 
 				}
-			
 			}
 		});
+		
+
+		contentPane.add(labelCount);
 		contentPane.add(textFieldImie);
 		textFieldImie.setColumns(10);
 		
@@ -162,33 +181,23 @@ public class wyjazdy extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane_1.setViewportView(scrollPane);
-		
-
-
-		
+			
 		tabela = new JTable();
 		tabela.addMouseListener(new MouseAdapter(){
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-					
+			public void mouseClicked(MouseEvent arg0) {				
 				int nrWierszu = tabela.getSelectedRow();
-				
-				
 				a_number = tabela.getValueAt(nrWierszu, 0).toString();
 				getNumber();
 				int YesOrNo = JOptionPane.showConfirmDialog(null, "Czy chcesz zobaczyc ca³y raport z wyjazdu");
 				if (YesOrNo == 0)
-				{
-					
+				{					
 					wyjazdCal wyjKon = new wyjazdCal();
 					wyjKon.setVisible(true);
 					setVisible(false);
-
 				}
 			}
-		});
-		
-
+		});		
 		
 		scrollPane.setViewportView(tabela);
 		
@@ -196,41 +205,66 @@ public class wyjazdy extends JFrame {
 		btnWykres.setBounds(282, 380, 264, 30);
 		btnWykres.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String zdarzenie = "Po¿ar";
-				ResultSet zdarzenieL = null;
-				String zdarzenie2;
-				String zdarzenie3;
-				String zdarzenie4;
-				String zdarzenie5;
+				String zdarzenie = "Wypadek";
+				Number zdarzenieL = null;
+				String zdarzenie2 = "podtopienie";
+
 				try {
-					String query="Select Count zdarzenie from wyjazdy where zdarzenie=?";
+					String query="Select Count(zdarzenie) from wyjazdy where zdarzenie=?";		
+					String query1="Select Count(zdarzenie) from wyjazdy where zdarzenie=?";
+					String query2="Select Count(zdarzenie) from wyjazdy where zdarzenie=?";
+					String query3="Select Count(zdarzenie) from wyjazdy where zdarzenie=?";
+					String query4="Select Count(zdarzenie) from wyjazdy where zdarzenie=?";
+					String query5="Select Count(zdarzenie) from wyjazdy where zdarzenie=?";
+					String query6="Select Count(zdarzenie) from wyjazdy where zdarzenie=?";
 					PreparedStatement pst=connection.prepareStatement(query);
-					pst.setString(1,  zdarzenie);
-						
+					PreparedStatement pst1=connection.prepareStatement(query1);
+					PreparedStatement pst2=connection.prepareStatement(query2);
+					PreparedStatement pst3=connection.prepareStatement(query3);
+					PreparedStatement pst4=connection.prepareStatement(query4);
+					PreparedStatement pst5=connection.prepareStatement(query5);
+					PreparedStatement pst6=connection.prepareStatement(query6);
+					pst.setString(1,  "Po¿ar");
+					pst1.setString(1,  "Wypadek");
+					pst2.setString(1,  "Szerszenie, osy");
+					pst3.setString(1,  "Podtopienie");
+					pst4.setString(1,  "Wyjazd gospodarczy");
+					pst5.setString(1,  "Miejscowe zagro¿enie");
+					pst6.setString(1,  "Miejscowe zagro¿enie");
 					ResultSet rs = pst.executeQuery();
-					zdarzenieL=rs;
+					ResultSet rs1 = pst1.executeQuery();
+					ResultSet rs2 = pst2.executeQuery();
+					ResultSet rs3 = pst3.executeQuery();
+					ResultSet rs4 = pst4.executeQuery();
+					ResultSet rs5 = pst5.executeQuery();
+					ResultSet rs6 = pst6.executeQuery();
+					
+					DefaultPieDataset wykresWyjazd = new DefaultPieDataset();
+					setLocationRelativeTo(null);
+					wykresWyjazd.setValue("Po¿ar", rs.getInt(1));
+					wykresWyjazd.setValue("Miejscowe zagrozenie", rs5.getInt(1));
+					wykresWyjazd.setValue("Wyjazd gospodarczy", rs4.getInt(1));
+					wykresWyjazd.setValue("Podtopienie", rs3.getInt(1));
+					wykresWyjazd.setValue("Szerszenie", rs2.getInt(1));
+					wykresWyjazd.setValue("Wypadek", rs1.getInt(1));
+					wykresWyjazd.setValue("Inny", rs6.getInt(1));
+					
+					JFreeChart wykres = ChartFactory.createPieChart("Wyjazdy", wykresWyjazd, true, true, true);
+					wykres.getPlot();
+					ChartFrame frame = new ChartFrame("Wyjazdy", wykres);
+					frame.setBounds(100, 100, 572, 460);
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+					frame.setSize(450,500);
 					
 					pst.close();
 				}catch(Exception exc)
 				{
 					JOptionPane.showMessageDialog(null, exc);
 					exc.printStackTrace();						 
-				}
-			
-				DefaultPieDataset wykresWyjazd = new DefaultPieDataset();
-				setLocationRelativeTo(null);
+				}	
+				
 
-				wykresWyjazd.setValue("Po¿ar", (Number) zdarzenieL);
-				wykresWyjazd.setValue("Miejscowe zagrozenie", new Integer(20));
-				wykresWyjazd.setValue("Wyjazd gospodarczy", new Integer(30));
-				wykresWyjazd.setValue("Podtopienie", new Integer(40));
-				wykresWyjazd.setValue("Szerszenie", new Integer(40));
-				wykresWyjazd.setValue("Wypadek", new Integer(40));
-				JFreeChart wykres = ChartFactory.createPieChart("Wyjazdy", wykresWyjazd, true, true, true);
-				wykres.getPlot();
-				ChartFrame frame = new ChartFrame("Wyjazdy", wykres);
-				frame.setVisible(true);
-				frame.setSize(450,500);
 				
 			}
 		});
@@ -251,9 +285,6 @@ public class wyjazdy extends JFrame {
 		lblTlo.setIcon(new ImageIcon(wyjazdy.class.getResource("/zdjecia/Bez nazwy-1.png")));
 		contentPane.add(lblTlo);
 		
-		
-	
-	
 	}
 	
 	protected static void DISPOSE_ON_CLOSE() {
