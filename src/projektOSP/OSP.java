@@ -112,6 +112,19 @@ public class OSP {
 		comboBox_5.setBounds(36, 176, 200, 22);
 		frame.getContentPane().add(comboBox_5);
 		
+		JButton btnINF = new JButton("?");
+		btnINF.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+					
+				info inf = new info();
+				inf.setVisible(true);
+
+			}
+		});
+		btnINF.setBounds(498, 11, 48, 33);
+		frame.getContentPane().add(btnINF);
+		
 		JLabel lblMiejsceZdarzenia = new JLabel("Miejsce zdarzenia:");
 		lblMiejsceZdarzenia.setForeground(Color.ORANGE);
 		lblMiejsceZdarzenia.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -119,6 +132,7 @@ public class OSP {
 		frame.getContentPane().add(lblMiejsceZdarzenia);
 		
 		JComboBox<String> comboBox_6 = new JComboBox<String>();
+		comboBox_6.setModel(new DefaultComboBoxModel(new String[] {"Grzybowo", "Jarluty Du\u017Ce", "Jarluty Ma\u0142e", "Kalisz", "Karniewo", "K\u0105tki", "Klice", "Kliczki", "Kozdroje-W\u0142osty", "Koziczyn", "Lekowo", "Lek\u00F3wiec", "Lipa", "Mo\u015Bcice", "Paw\u0142owo", "Paw\u0142\u00F3wko", "Pniewo-Czeruchy", "Pniewo Wielkie", "Przybyszewo", "Radomka", "Regimin", "Szulmierz", "Targonie", "Trzcianka", "Ze\u0144bok", "Inne"}));
 		comboBox_6.addItem("Lekowo");
 		comboBox_6.setBounds(139, 312, 105, 23);
 		frame.getContentPane().add(comboBox_6);

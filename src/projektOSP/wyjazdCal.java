@@ -287,8 +287,16 @@ public class wyjazdCal extends JFrame {
 		});
 		
 
-		btnNewButton.setBounds(346, 331, 187, 34);
+		btnNewButton.setBounds(350, 286, 183, 34);
 		contentPane.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Raport PDF");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnNewButton_1.setBounds(350, 330, 183, 35);
+		contentPane.add(btnNewButton_1);
 		
 		
 		JLabel label = new JLabel("");

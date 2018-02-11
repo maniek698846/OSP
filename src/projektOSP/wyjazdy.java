@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.general.DefaultPieDataset;
 
 //import org.jfree.chart.ChartFactory;
@@ -28,6 +29,7 @@ import java.awt.Toolkit;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Component;
 public class wyjazdy extends JFrame {
 
 	/**
@@ -180,6 +182,8 @@ public class wyjazdy extends JFrame {
 		contentPane.add(scrollPane_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(Color.LIGHT_GRAY);
+		scrollPane.setEnabled(false);
 		scrollPane_1.setViewportView(scrollPane);
 			
 		tabela = new JTable();
@@ -230,7 +234,7 @@ public class wyjazdy extends JFrame {
 					pst3.setString(1,  "Podtopienie");
 					pst4.setString(1,  "Wyjazd gospodarczy");
 					pst5.setString(1,  "Miejscowe zagro¿enie");
-					pst6.setString(1,  "Miejscowe zagro¿enie");
+					pst6.setString(1,  "Inny");
 					ResultSet rs = pst.executeQuery();
 					ResultSet rs1 = pst1.executeQuery();
 					ResultSet rs2 = pst2.executeQuery();
@@ -248,8 +252,8 @@ public class wyjazdy extends JFrame {
 					wykresWyjazd.setValue("Szerszenie", rs2.getInt(1));
 					wykresWyjazd.setValue("Wypadek", rs1.getInt(1));
 					wykresWyjazd.setValue("Inny", rs6.getInt(1));
-					
-					JFreeChart wykres = ChartFactory.createPieChart("Wyjazdy", wykresWyjazd, true, true, true);
+					JFreeChart wykres = ChartFactory.createPieChart("Wyjazdy", wykresWyjazd, true, true, false);
+//					JFreeChart wykres = ChartFactory.createBarChart("Wyjazdy", "Liczba wyjazdów", 100, wykresWyjazd, PlotOrientation.VERTICAL, true, true, true);
 					wykres.getPlot();
 					ChartFrame frame = new ChartFrame("Wyjazdy", wykres);
 					frame.setBounds(100, 100, 572, 460);

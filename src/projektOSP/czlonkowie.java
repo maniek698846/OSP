@@ -323,19 +323,16 @@ public class czlonkowie extends JFrame  {
 		JCheckBox checkBoxWod = new JCheckBox("Tak");
 		checkBoxWod.setBounds(421, 256, 46, 23);
 		panel.add(checkBoxWod);
-		
-		
-		/** Dodawanie cz³onka do bazy danych
-		 * 
-		 */
-
 
 		
 		JButton btnDodajCzlonka = new JButton("Dodaj cz\u0142onka");					
 		btnDodajCzlonka.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String query="insert into zaloga (imie, nazwisko, NrTel, Data_ur, PESEL, Adres, kierowca, dowodca, kpp, technik, podstawowe, wodne) values (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12);";
+					String query="insert into zaloga (imie, nazwisko, NrTel, "
+							+ "Data_ur, PESEL, Adres, kierowca, "
+							+ "dowodca, kpp, technik, podstawowe, wodne) values"
+							+ " (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12);";
 					
 					PreparedStatement pst=connection.prepareStatement(query);
 
@@ -345,6 +342,7 @@ public class czlonkowie extends JFrame  {
 					pst.setString(4, tfDU.getText());
 					pst.setString(5, tfPESEL.getText());
 					pst.setString(6, tfAdres.getText());
+					
 					if (chckbxKier.isSelected()) {
 						pst.setString(7, "tak");	
 					}
