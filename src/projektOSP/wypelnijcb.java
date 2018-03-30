@@ -19,7 +19,7 @@ public class wypelnijcb extends JFrame {
 
 		try {
 			
-			String query="select distinct Imie, Nazwisko from zaloga ORDER BY Nazwisko, Imie ASC";
+			String query="select distinct Imie, Nazwisko from zaloga where podstawowe='tak' ORDER BY Nazwisko, Imie ASC";
 			PreparedStatement pst=connection.prepareStatement(query);
 			ResultSet rs=pst.executeQuery();		
 			while(rs.next())
@@ -40,6 +40,27 @@ public class wypelnijcb extends JFrame {
 		try {
 			String kierowcaQuery = "tak";
 			String query="select distinct Imie, Nazwisko from zaloga where kierowca=? ORDER BY Nazwisko, Imie ASC";
+			PreparedStatement pst=connection.prepareStatement(query);
+			pst.setString(1,  kierowcaQuery);
+			ResultSet rs=pst.executeQuery();		
+			while(rs.next())
+			{
+				comboBoxName2.addItem(rs.getString("Imie")+" "+rs.getString("Nazwisko"));		
+			}
+			
+		}catch(Exception exc)
+		{
+			exc.printStackTrace();		 
+		}
+		
+	}
+	
+	public static void wypComboBoxDow(JComboBox<String> comboBoxName2) {
+		Connection connection=sqliteConnection.dbConnector();
+
+		try {
+			String kierowcaQuery = "tak";
+			String query="select distinct Imie, Nazwisko from zaloga where dowodca=? ORDER BY Nazwisko, Imie ASC";
 			PreparedStatement pst=connection.prepareStatement(query);
 			pst.setString(1,  kierowcaQuery);
 			ResultSet rs=pst.executeQuery();		

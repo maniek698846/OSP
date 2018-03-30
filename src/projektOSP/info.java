@@ -17,18 +17,18 @@ public class info extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					info frame = new info();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					info frame = new info();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -41,11 +41,12 @@ public class info extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
 
+
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon(info.class.getResource("/zdjecia/zdjeciePro.jpg")));
+		label_1.setIcon(new ImageIcon(info.class.getResource("/zdjecia/zdjeciePro.png")));
 		label_1.setBounds(153, 11, 101, 114);
 		contentPane.add(label_1);
 		

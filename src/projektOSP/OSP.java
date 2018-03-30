@@ -86,7 +86,7 @@ public class OSP {
 		comboBox_1.addItem("Dowódca");
 		comboBox_1.setBounds(294, 107, 198, 23);
 		frame.getContentPane().add(comboBox_1);
-		wypelnijcb.wypComboBox(comboBox_1);
+		wypelnijcb.wypComboBoxDow(comboBox_1);
 		
 		JComboBox<String> comboBox_2 = new JComboBox<String>();
 		comboBox_2.addItem("Ratownik");

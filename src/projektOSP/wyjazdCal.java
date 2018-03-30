@@ -111,12 +111,6 @@ public class wyjazdCal extends JFrame {
 		lblMiejscowo.setBounds(23, 81, 142, 29);
 		contentPane.add(lblMiejscowo);
 		
-		JLabel lblZdarzenie = new JLabel("Zdarzenie:");
-		lblZdarzenie.setForeground(Color.ORANGE);
-		lblZdarzenie.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblZdarzenie.setBounds(23, 136, 142, 29);
-		contentPane.add(lblZdarzenie);
-		
 		JLabel lblIlo = new JLabel("Ilo\u015B\u0107 kilometr\u00F3w:");
 		lblIlo.setForeground(Color.ORANGE);
 		lblIlo.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -132,7 +126,7 @@ public class wyjazdCal extends JFrame {
 		JLabel lblZastp = new JLabel("Zast\u0119p");
 		lblZastp.setForeground(Color.ORANGE);
 		lblZastp.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblZastp.setBounds(90, 208, 142, 29);
+		lblZastp.setBounds(90, 206, 142, 29);
 		contentPane.add(lblZastp);
 		
 		JLabel lblKierowca = new JLabel("Kierowca:");
@@ -201,12 +195,6 @@ public class wyjazdCal extends JFrame {
 		label_5.setBounds(155, 109, 148, 29);
 		contentPane.add(label_5);
 		
-		JLabel label_6 = new JLabel("");
-		label_6.setFont(new Font("Tahoma", Font.BOLD, 13));
-		label_6.setForeground(Color.WHITE);
-		label_6.setBounds(155, 136, 148, 29);
-		contentPane.add(label_6);
-		
 		JLabel label_7 = new JLabel("");
 		label_7.setFont(new Font("Tahoma", Font.BOLD, 13));
 		label_7.setForeground(Color.WHITE);
@@ -243,9 +231,10 @@ public class wyjazdCal extends JFrame {
 		label_12.setBounds(79, 372, 200, 18);
 		contentPane.add(label_12);
 		
-		JLabel label_13 = new JLabel("");
-		label_13.setBounds(335, 32, 198, 78);
+		JLabel label_13 = new JLabel("<html></html>");
+		label_13.setBounds(301, 32, 232, 76);
 		contentPane.add(label_13);
+
 		label_13.setForeground(Color.WHITE);
 		label_13.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
@@ -265,7 +254,7 @@ public class wyjazdCal extends JFrame {
 							label_3.setText(rs.getString("data"));
 							label_4.setText(rs.getString("miejscowosc"));
 							label_5.setText(rs.getString("ilosc_km"));
-							label_6.setText(rs.getString("zdarzenie"));
+//							label_6.setText(rs.getString("zdarzenie"));
 							label_7.setText(rs.getString("kierowca"));
 							label_8.setText(rs.getString("dowodca"));
 							label_9.setText(rs.getString("ratownik1"));
@@ -303,6 +292,18 @@ public class wyjazdCal extends JFrame {
 		label.setIcon(new ImageIcon(wyjazdCal.class.getResource("/zdjecia/Bez nazwy-12.png")));
 		label.setBounds(0, 0, 556, 436);
 		contentPane.add(label);
+		
+		JLabel label_6 = new JLabel("");
+		label_6.setFont(new Font("Tahoma", Font.BOLD, 13));
+		label_6.setForeground(Color.WHITE);
+		label_6.setBounds(155, 136, 148, 29);
+		contentPane.add(label_6);
+		
+		JLabel lblZdarzenie = new JLabel("Zdarzenie:");
+		lblZdarzenie.setForeground(Color.ORANGE);
+		lblZdarzenie.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblZdarzenie.setBounds(23, 136, 142, 29);
+		contentPane.add(lblZdarzenie);
 		
 
 	}

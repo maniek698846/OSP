@@ -66,6 +66,7 @@ public class wyjazdy extends JFrame {
 	}
 	
 	public wyjazdy() {
+		setTitle("Wyjazdy OSP Lekowo");
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(wyjazdy.class.getResource("/zdjecia/Bez nazwy-2.gif")));
 		connection=sqliteConnection.dbConnector();
@@ -87,6 +88,9 @@ public class wyjazdy extends JFrame {
 					ResultSet rs = pst.executeQuery();
 					tabela.setModel(DbUtils.resultSetToTableModel(rs));
 					tabela.getColumnModel().getColumn(0).setMaxWidth(40);
+					tabela.getColumnModel().getColumn(2).setMaxWidth(90);
+					
+					
 					
 					pst.close();
 				}catch(Exception exc)
@@ -252,14 +256,15 @@ public class wyjazdy extends JFrame {
 					wykresWyjazd.setValue("Szerszenie", rs2.getInt(1));
 					wykresWyjazd.setValue("Wypadek", rs1.getInt(1));
 					wykresWyjazd.setValue("Inny", rs6.getInt(1));
-					JFreeChart wykres = ChartFactory.createPieChart("Wyjazdy", wykresWyjazd, true, true, false);
+					JFreeChart wykres = ChartFactory.createPieChart("Wyjazdy podzielone ze wzglêdu na zdarzenie", wykresWyjazd, true, true, false);
 //					JFreeChart wykres = ChartFactory.createBarChart("Wyjazdy", "Liczba wyjazdów", 100, wykresWyjazd, PlotOrientation.VERTICAL, true, true, true);
 					wykres.getPlot();
 					ChartFrame frame = new ChartFrame("Wyjazdy", wykres);
 					frame.setBounds(100, 100, 572, 460);
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
-					frame.setSize(450,500);
+					frame.setSize(550,500);
+					frame.setIconImage(Toolkit.getDefaultToolkit().getImage(OSP.class.getResource("/zdjecia/Bez nazwy-2.gif")));
 					
 					pst.close();
 				}catch(Exception exc)

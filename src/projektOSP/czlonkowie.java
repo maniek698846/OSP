@@ -57,27 +57,17 @@ public class czlonkowie extends JFrame  {
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					czlonkowie frame = new czlonkowie();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-	
+
 	Connection connection = null;
 	private JTable tabela1;
 	private JTextField tfDU;
 	private JTextField tfPESEL;
 	private JTextField tfNR;
 	private JTextField tfAdres;
+	private JTable table;
 
 	public czlonkowie() {
+		setTitle("Cz\u0142onkowie OSP Lekowo");
 		connection=sqliteConnection.dbConnector();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(czlonkowie.class.getResource("/zdjecia/Bez nazwy-2.gif")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,7 +105,7 @@ public class czlonkowie extends JFrame  {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					String query=" select distinct Imie, Nazwisko from zaloga where podstawowe='Tak' ORDER BY Nazwisko, Imie ASC;";
+					String query=" select distinct Imie, Nazwisko from zaloga where podstawowe='tak' ORDER BY Nazwisko, Imie ASC;";
 					PreparedStatement pst=connection.prepareStatement(query);	
 					ResultSet rs = pst.executeQuery();
 					tabela1.setModel(DbUtils.resultSetToTableModel(rs));
@@ -137,39 +127,67 @@ public class czlonkowie extends JFrame  {
 		tabela1 = new JTable();
 		scrollPane.setViewportView(tabela1);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		scrollPane.setColumnHeaderView(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		scrollPane.setColumnHeaderView(lblNewLabel_1);
-		
 
 		
 		JPanel tabNie = new JPanel();
-		tabbedPane.addTab("Cz\u0142onkowie nieaktywni", null, tabNie, null);
+		tabbedPane.addTab("Wszyscy cz\u0142onkowie", null, tabNie, null);
 		tabNie.setLayout(null);
 		
-		JLabel label_2 = new JLabel("");
-		label_2.setBounds(52, 102, 147, 24);
-		tabNie.add(label_2);
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(0, 0, 506, 310);
+		tabNie.add(scrollPane_1);
 		
-		JSlider slider = new JSlider();
-		slider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				int wartosc = slider.getValue();
-				label_2.setText("Wartoœæ wynosi: "+wartosc);
-			}
-		});
-		slider.setValue(0);
-		slider.setPaintTicks(true);
-		slider.setMajorTickSpacing(5);
-		slider.setSnapToTicks(true);
-		slider.setBounds(52, 58, 238, 45);
-		tabNie.add(slider);
+		JTable tabela2 = new JTable();
+		scrollPane_1.setViewportView(tabela2);
+		
+		JButton btnNewButton_1 = new JButton("Wy\u015Bwietl");
+		btnNewButton_1.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						String query=" select distinct Imie, Nazwisko from zaloga ORDER BY Nazwisko, Imie ASC;";
+						PreparedStatement pst=connection.prepareStatement(query);	
+						ResultSet rs = pst.executeQuery();
+						tabela2.setModel(DbUtils.resultSetToTableModel(rs));
+						pst.close();
+					}catch(Exception exc)
+					{
+						JOptionPane.showMessageDialog(null, exc);
+						exc.printStackTrace();						 
+					}
+				}
+			});
+			
+			tabAct.setLayout(null);
+			tabAct.add(btnNewButton);
+			
+
+		btnNewButton_1.setBounds(0, 309, 506, 23);
+		tabNie.add(btnNewButton_1);
 		
 
 		
-		label_2.setText("Wartoœæ wynosi: 0");
+//		JLabel label_2 = new JLabel("");
+//		label_2.setBounds(52, 102, 147, 24);
+//		tabNie.add(label_2);
+//		
+//		JSlider slider = new JSlider();
+//		slider.addChangeListener(new ChangeListener() {
+//			public void stateChanged(ChangeEvent arg0) {
+//				int wartosc = slider.getValue();
+//				label_2.setText("Wartoœæ wynosi: "+wartosc);
+//			}
+//		});
+//		slider.setValue(0);
+//		slider.setPaintTicks(true);
+//		slider.setMajorTickSpacing(5);
+//		slider.setSnapToTicks(true);
+//		slider.setBounds(52, 58, 238, 45);
+//		tabNie.add(slider);
+		
+
+		
+//		label_2.setText("Wartoœæ wynosi: 0");
 //		
 //		final String DEST = "C:\\Users\\User\\eclipse\\ospmarian\\helloworld.pdf";
 //		JButton btnRaportPdf = new JButton("RAPORT PDF");
